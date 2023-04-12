@@ -45,7 +45,6 @@ async def on_message(message):
             current_time = datetime.datetime.now(timezone)
             target_time = current_time.replace(hour=22, minute=0, second=0, microsecond=0)
             if current_time < target_time:
-                nickname = message.author.nick if message.author.nick else message.author.name
-                await message.reply(f"{nickname} is currently focusing on homework, please do not ping until after 10:00 PM PST.")
+                await message.reply("Chris is currently focusing on homework, please do not ping until after 10:00 PM PST.")
             
 client.run(TOKEN)
