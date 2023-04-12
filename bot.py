@@ -33,7 +33,7 @@ async def on_message(message):
             await message.reply('CHICKEN THIGH :rofl:')
     if ''.join([i for i in message.content.lower() if i.isalpha()]).endswith('who'):
             await message.reply('CHICKEN POO :rofl:')
-    if 'stfu' in message.content.lower():
+    if 'stfu' in message.content.lower() or 'kys' in message.content.lower():
             await message.reply('no u')
 
     with open('weeb.txt', 'r') as fin:
