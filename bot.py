@@ -25,11 +25,11 @@ async def on_message(message):
         return
 
     for word in what_words:
-        if message.content.lower().endswith(word):
+        if ''.join([i for i in message.content.lower() if i.isalpha()]).endswith(word):
             await message.reply('CHICKEN BUTT :rofl:')
-    if message.content.lower().endswith('why'):
+    if ''.join([i for i in message.content.lower() if i.isalpha()]).endswith('why'):
             await message.reply('CHICKEN THIGH :rofl:')
-    if message.content.lower().endswith('who'):
+    if ''.join([i for i in message.content.lower() if i.isalpha()]).endswith('who'):
             await message.reply('CHICKEN POO :rofl:')
     if 'stfu' in message.content.lower():
             await message.reply('no u')
