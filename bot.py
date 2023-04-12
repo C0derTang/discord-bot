@@ -5,7 +5,7 @@ dotenv.load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-what_words = ['wdym', 'what', 'wat', 'waht', 'wjat', 'wtf']
+what_words = ['what', 'wat', 'waht', 'wjat']
 anime_ref = ['WEEB ALERT!', 'A WILD WEEB HAS APPEARED', 'IS THIS A JOJO REFERENCE?']
 
 client = discord.Client(intents = discord.Intents.all())
