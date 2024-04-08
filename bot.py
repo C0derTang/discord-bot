@@ -1,29 +1,41 @@
-#bot.py
-import os, discord, dotenv, random, datetime
+import os
+import discord
+import dotenv
+import random
+import datetime
+
+from discord.ext import commands
+from discord.commands import Option, slash_command  # Import slash_command
 
 dotenv.load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+
+intents = discord.Intents.default()
+intents.members = True  # Enable intents for member events, if needed.
+
+# Use a command prefix of your choice; it won't affect slash commands.
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 what_words = ['what', 'wat', 'waht', 'wjat']
 anime_ref = ['WEEB ALERT!', 'A WILD WEEB HAS APPEARED', 'IS THIS A JOJO REFERENCE?']
 
 timezone = datetime.timezone(datetime.timedelta(hours=-8))
 
-client = discord.Client(intents = discord.Intents.all())
-
-@client.event
+@bot.event
 async def on_ready():
-    print('Logged in as {0.user}'.format(client))
+    print(f'Logged in as {bot.user}')
 
-@client.event
+@bot.event
 async def on_member_join(member):
     greeting_message = "Hello! Welcome to the server!"
     await member.send(greeting_message)
 
-@client.event
+@bot.event
 async def on_message(message):
-    if message.author == client.user:
+    # Important: Add this line to process commands and allow both message and slash commands.
+    await bot.process_commands(message)
+
+    if message.author == bot.user:
         return
 
     for word in what_words:
@@ -33,18 +45,19 @@ async def on_message(message):
             await message.reply('CHICKEN THIGH :rofl:')
     if ''.join([i for i in message.content.lower() if i.isalpha()]).endswith('who'):
             await message.reply('CHICKEN POO :rofl:')
-    if 'stfu' in message.content.lower() or 'kys' in message.content.lower():
+    if 'stfu' in message.content.lower() or 'kys' in message.content.lower() or 'no u' in message.content.lower() or 'nou' in message.content.lower():
             await message.reply('no u')
+    if 'dp' in message.content.lower():
+         await message.reply(random.choice(["Dunking Porridge?", "Dinosaur Prostate?", "Dead People?"]))
 
     with open('weeb.txt', 'r') as fin:
         for word in fin.read().split('|'):
             if word in message.content.lower():
                 await message.reply(random.choice(anime_ref))
-    for user in message.mentions:
-        if user.id == 752956559885205697:
-            current_time = datetime.datetime.now(timezone)
-            target_time = current_time.replace(hour=22, minute=0, second=0, microsecond=0)
-            if current_time < target_time:
-                await message.reply("Chris is currently focusing on homework, please do not ping until after 10:00 PM PST.")
-            
-client.run(TOKEN)
+
+# Slash command
+@bot.slash_command(name="ping", description="Responds with Pong!")
+async def ping(ctx):
+    await ctx.respond("Pong!")
+
+bot.run(TOKEN)
